@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analizador de Código</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .lexical-error {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Analizador Léxico</h1>
+        
+        <form action="/analyze" method="POST">
+            <div class="form-group">
+                <label for="code">Ingresa el código a analizar:</label>
+                <textarea class="form-control" name="code" rows="10">{{ code }}</textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Analizar</button>
+            <button type="submit" formaction="/clear" class="btn btn-danger">Limpiar Historial</button>
+        </form>
+
+        <hr>
+
+        <h3>Resultado del análisis:</h3>
+        <div class="card mt-3">
+            <div class="card-body">
+                {% if results %}
+                    <ul>
+                        {% for result in results %}
+                            <li class="{% if 'Error Léxico' in result %}lexical-error{% endif %}">
+                                {{ result }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No se ha realizado ningún análisis aún.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <h3 class="mt-5">Historial de análisis:</h3>
+        <div class="card mt-3">
+            <div class="card-body">
+                {% if history %}
+                    <ul>
+                        {% for item in history %}
+                            <li>{{ item }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No hay historial disponible.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>7
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
