@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil Arrendatario</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2 class="text-center">Perfil Arrendatario</h2>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <img src="https://via.placeholder.com/150" class="card-img-top" alt="Arrendatario">
+                <div class="card-body">
+                    <h5 class="card-title">{{ owner.name }}</h5>
+                    <p class="card-text"><i class="fas fa-calendar-alt"></i> {{ owner.age }}</p>
+                    <p class="card-text"><i class="fas fa-briefcase"></i> {{ owner.occupation }}</p>
+                    <p class="card-text"><i class="fas fa-dollar-sign"></i> {{ owner.income }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h5>Descripción</h5>
+                    <p>{{ owner.description }}</p>
+
+                    <h5>Enviar mensaje</h5>
+                    <form action="/send_message_owner" method="POST">
+                        <div class="form-group">
+                            <textarea class="form-control" name="message" rows="5" placeholder="Escribe tu mensaje..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Enviar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

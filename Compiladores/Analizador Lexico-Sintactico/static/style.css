@@ -1,0 +1,99 @@
+/* Estilo para el cuerpo de la página */
+body {
+    font-family: 'Verdana', sans-serif;
+    background-color: #9d73b6; /* Morado claro para el fondo */
+    color: #ffffff; /* Texto blanco */
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Contenedor principal */
+.container {
+    background-color: #c39ae0; /* Morado oscuro para el contenedor */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 900px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+/* Título principal */
+h1 {
+    color: #ffffff; /* Blanco para el texto */
+    margin-bottom: 20px;
+}
+
+/* Estilo para el textarea */
+textarea {
+    width: 100%;
+    height: 150px;
+    padding: 15px;
+    border: 1px solid #d3d3d3;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-bottom: 20px;
+    background-color: #b19cd9; /* Morado claro para el área de texto */
+    color: #ffffff; /* Texto blanco */
+    resize: vertical;
+}
+
+/* Botones */
+button {
+    background-color: #ffb6c1; /* Botón en rosa claro */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #4d256e; /* Botón en rosa más fuerte al pasar el mouse */
+}
+
+/* Estilo para la tabla */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background-color: #8a2be2; /* Morado oscuro para las cabeceras */
+    color: white;
+}
+
+td {
+    background-color: #6912a8; /* Morado oscuro para las celdas */
+    color: #c473c1; /* Texto blanco */
+}
+
+/* Estilo para los mensajes de éxito */
+.success {
+    background-color: #90ee90; /* Verde claro para los mensajes de éxito */
+    color: #000000;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+/* Estilo para los errores */
+.error {
+    background-color: #e74c3c; /* Rojo para los mensajes de error */
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
