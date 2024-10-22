@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analizador Léxico-Sintáctico</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #9d73b6;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background-color: #c39ae0;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 1200px;
+            min-height: 500px;
+            text-align: center;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            background-color: #a35cdd;
+            color: white;
+            resize: none;
+        }
+        button {
+            background-color: #546E7A;
+            border: none;
+            padding: 10px 20px;
+            color: white;
+            font-size: 1.2em;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #4d256e;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            word-wrap: break-word;
+            table-layout: fixed; /* Esto asegura que las celdas se ajusten y no sobrepasen el tamaño */
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #6912a8;
+            word-wrap: break-word;
+        }
+        th {
+            background-color: #c473c1;
+        }
+        td {
+            background-color: #f1c1ef;
+            color: black;
+        }
+        tr:nth-child(even) td {
+            background-color: #write;
+        }
+        .error, .success {
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+            color: black;
+        }
+        .error {
+            background-color: #FF8A80;
+        }
+        .success {
+            background-color: #81C784;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Analizador Léxico-Sintáctico</h1>
+        <form method="POST">
+            <textarea name="code" placeholder="Escribe tu código aquí...">{{ code }}</textarea><br>
+            <button type="submit">Analizar</button>
+        </form>
+
+        <div class="result-container">
+            {% if lexical_results %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Token</th>
+                            <th>Reservada</th>
+                            <th>Identificador</th>
+                            <th>Simbolo</th>
+                            <th>Número</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for result in lexical_results %}
+                        <tr>
+                            <td>{{ result.token }}</td>
+                            <td>{{ result.reservada }}</td>
+                            <td>{{ result.identificador }}</td>
+                            <td>{{ result.simbolo }}</td>
+                            <td>{{ result.numero }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+
+            {% if syntax_errors %}
+                <div class="error">
+                    <h2>Errores de Sintaxis:</h2>
+                    <ul>
+                        {% for error in syntax_errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% else %}
+                <div class="success">
+                    <p>No hay errores de sintaxis.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

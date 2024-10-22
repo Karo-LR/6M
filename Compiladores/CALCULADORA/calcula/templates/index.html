@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Sintáctica</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="calculator">
+            <input type="text" id="expression" placeholder="Ingrese la expresión" />
+            <div id="resultado">R:<span id="resultadoValor"></span></div>
+            <div class="buttons">
+                <!-- Números y operaciones básicas -->
+                <button class="btn-clear" onclick="clearInput()">C</button>
+                <button class="btn-operator" onclick="appendValue('(')">(</button>
+                <button class="btn-operator" onclick="appendValue(')')">)</button>
+                <button class="btn-operator" onclick="appendValue('/')">/</button>
+
+                <button class="btn-number" onclick="appendValue('7')">7</button>
+                <button class="btn-number" onclick="appendValue('8')">8</button>
+                <button class="btn-number" onclick="appendValue('9')">9</button>
+                <button class="btn-operator" onclick="appendValue('*')">*</button>
+
+                <button class="btn-number" onclick="appendValue('4')">4</button>
+                <button class="btn-number" onclick="appendValue('5')">5</button>
+                <button class="btn-number" onclick="appendValue('6')">6</button>
+                <button class="btn-operator" onclick="appendValue('-')">-</button>
+                
+                <button class="btn-number" onclick="appendValue('1')">1</button>
+                <button class="btn-number" onclick="appendValue('2')">2</button>
+                <button class="btn-number" onclick="appendValue('3')">3</button>
+                <button class="btn-operator" onclick="appendValue('+')">+</button>
+                
+                <!-- Nuevos botones para paréntesis y punto -->
+                <button class="btn-number" onclick="appendValue('0')">0</button>
+                <button class="btn-number" onclick="appendValue('.')">.</button>
+                <button class="btn-equal" onclick="calcular()">=</button>
+            </div>
+            <!-- Botón para generar el árbol de derivación -->
+            <button class="btn-equal" onclick="generarArbol()">Generar Árbol de Derivación</button>
+        </div>
+
+        <div class="analysis">
+            <div id="resultado-lexico">
+                <h3>Resultado Léxico</h3>
+                <pre id="lexico"></pre> <!-- Aquí se mostrarán los tokens -->
+            </div>
+            <div id="arbol-derivacion">
+                <h3>Árbol de Derivación</h3>
+                <svg id="treeSVG" width="600" height="400"></svg>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function appendValue(value) {
+            $('#expression').val($('#expression').val() + value);
+        }
+
+        function clearInput() {
+            $('#expression').val('');
+            $('#resultadoValor').text('');
+            $('#lexico').text('');  // Limpiamos el cuadro léxico
+            $('#treeSVG').html('');  // Limpiamos el contenido del SVG
+        }
+
+        function calcular() {
+            const expression = $('#expression').val();
+            $.post('/calculate', { expression: expression }, function(data) {
+                // Mostramos el resultado de la expresión
+                $('#resultadoValor').text(data.resultado);
+                
+                // Mostramos los tokens léxicos
+                let tokensDisplay = data.tokens.join("\n");
+                $('#lexico').text(tokensDisplay);  // Actualizamos el cuadro de análisis léxico
+            });
+        }
+
+        function generarArbol() {
+            const expression = $('#expression').val();
+            $.post('/generate_tree', { expression: expression }, function(data) {
+                const svg = document.getElementById("treeSVG");
+                svg.innerHTML = '';  // Limpiar el SVG
+
+                // Crear nodos y dibujar el árbol recursivamente
+                function createSVGTree(x, y, arbol, level = 1) {
+                    if (typeof arbol === 'string') {
+                        // Dibujar nodo (terminal)
+                        const circle = `<circle cx="${x}" cy="${y}" r="20" stroke="black" stroke-width="2" fill="white" />`;
+                        const text = `<text x="${x}" y="${y + 5}" text-anchor="middle">${arbol}</text>`;
+                        svg.innerHTML += circle + text;
+                        return;
+                    }
+                    // Dibujar el nodo operador
+                    const circle = `<circle cx="${x}" cy="${y}" r="20" stroke="black" stroke-width="2" fill="white" />`;
+                    const text = `<text x="${x}" y="${y + 5}" text-anchor="middle">${arbol[0]}</text>`;
+                    svg.innerHTML += circle + text;
+
+                    // Hijo izquierdo
+                    createSVGTree(x - 100 / level, y + 80, arbol[1], level + 1);
+
+                    // Dibujar línea al hijo izquierdo
+                    svg.innerHTML += `<line x1="${x}" y1="${y + 20}" x2="${x - 100 / level}" y2="${y + 60}" stroke="black" />`;
+
+                    // Hijo derecho
+                    createSVGTree(x + 100 / level, y + 80, arbol[2], level + 1);
+
+                    // Dibujar línea al hijo derecho
+                    svg.innerHTML += `<line x1="${x}" y1="${y + 20}" x2="${x + 100 / level}" y2="${y + 60}" stroke="black" />`;
+                }
+
+                // Iniciar el dibujo del árbol desde la raíz
+                createSVGTree(300, 40, data.arbol);
+            });
+        }
+    </script>
+</body>
+</html>
